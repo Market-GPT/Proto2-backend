@@ -7,6 +7,9 @@ jobs:
   deploy:
     name: Deploy app
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Proto2
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
