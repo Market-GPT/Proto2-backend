@@ -84,16 +84,16 @@ class IndexView(APIView):
                 ---
                 This is response of the query: 
                 {final_response}
-                
-                Format the response as markdown in a meaningful manner."""
+                ---
+                Format the response as html in a meaningful manner."""
                 prompt_template4 = ChatPromptTemplate.from_template(template=template4)
                 messages = prompt_template4.format_messages(query=query,final_response=final_response)
-                markdown_response = chat(messages)
+                html_response = chat(messages)
                 
-                print("\n\nStage 6: Markdown Response\n\n")
-                print(markdown_response.content)
+                print("\n\nStage 6: HTML Response\n\n")
+                print(html_response.content)
                 
-                return Response(markdown_response.content)
+                return Response(html_response.content)
             except Exception as e:
                 return Response({'error': str(e)})
         else:
