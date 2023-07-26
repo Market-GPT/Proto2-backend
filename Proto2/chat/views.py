@@ -65,6 +65,7 @@ class IndexView(APIView):
                 
                 output_dict = output_parser.parse(response.content)
                 query = output_dict.get('query')
+                print(query)
                 # template3 = """Enclose all the identifiers in the following query by double quotes so as to preserve their\
                 #     case sensitive nature:
                 #     query: {query}

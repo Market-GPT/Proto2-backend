@@ -9,6 +9,7 @@ colorama==0.4.6
 dataclasses-json==0.5.13
 dj-database-url==2.0.0
 Django==4.2.3
+django-cors-headers==4.2.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
 frozenlist==1.4.0
