@@ -78,7 +78,17 @@ class IndexView(APIView):
                 # print(response.content)
                 
                 final_response = run_query(query)
-                return Response(final_response)
+                
+                template4 = """Format the following as markdown: 
+                {final_response}"""
+                prompt_template4 = ChatPromptTemplate.from_template(template=template4)
+                messages = prompt_template4.format_messages(final_response=final_response)
+                markdown_response = chat(messages)
+                
+                print("\n\nStage 6: Markdown Response\n\n")
+                print(markdown_response.content)
+                
+                return Response(markdown_response.content)
             except Exception as e:
                 return Response({'error': str(e)})
         else:
