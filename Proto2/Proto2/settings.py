@@ -18,8 +18,15 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','[::1]', 'proto2.fly.dev']
+ALLOWED_HOSTS = ['localhost:3000','localhost','127.0.0.1','[::1]', 'proto2.fly.dev']
 CSRF_TRUSTED_ORIGINS = ['https://proto2.fly.dev']
+CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",  # Add the URL of your frontend application
+#     "https://example.com",
+#     "https://subdomain.example.com",
+#     # Add more allowed origins as needed
+# ]
 
 
 # Application definition
@@ -27,6 +34,7 @@ CSRF_TRUSTED_ORIGINS = ['https://proto2.fly.dev']
 INSTALLED_APPS = [
     'users',
     'chat',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +49,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',   #whitenoise
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
