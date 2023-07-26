@@ -26,6 +26,7 @@ CSRF_TRUSTED_ORIGINS = ['https://proto2.fly.dev']
 
 INSTALLED_APPS = [
     'users',
+    'chat',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -84,7 +85,7 @@ WSGI_APPLICATION = 'Proto2.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='sqlite:///'+os.path.join('db.sqlite3')
+        default='postgres://postgres:postgres@localhost:5432/postgres'
     )
 }
 
