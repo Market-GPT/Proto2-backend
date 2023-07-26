@@ -79,10 +79,15 @@ class IndexView(APIView):
                 
                 final_response = run_query(query)
                 
-                template4 = """Format the following as markdown: 
-                {final_response}"""
+                template4 = """This query was run on a database:
+                {query}
+                ---
+                This is response of the query: 
+                {final_response}
+                
+                Format the response as markdown in a meaningful manner."""
                 prompt_template4 = ChatPromptTemplate.from_template(template=template4)
-                messages = prompt_template4.format_messages(final_response=final_response)
+                messages = prompt_template4.format_messages(query=query,final_response=final_response)
                 markdown_response = chat(messages)
                 
                 print("\n\nStage 6: Markdown Response\n\n")
