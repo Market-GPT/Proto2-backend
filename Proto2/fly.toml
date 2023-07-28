@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for proto2 on 2023-07-25T19:44:54+05:30
+# fly.toml app configuration file generated for proto2 on 2023-07-28T01:27:20+05:30
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -22,12 +22,12 @@ console_command = "/code/manage.py shell"
   processes = ["app"]
 
 [[services]]
-  internal_port = 5432 # Postgres instance
   protocol = "tcp"
+  internal_port = 5432
 
-[[services.ports]]
-  handlers = ["pg_tls"]
-  port = 5432
+  [[services.ports]]
+    port = 5432
+    handlers = ["pg_tls"]
 
 [[statics]]
   guest_path = "/code/static"

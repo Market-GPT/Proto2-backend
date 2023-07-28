@@ -18,8 +18,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['localhost:3000','localhost','127.0.0.1','[::1]', 'proto2.fly.dev','marketgpt.vercel.app']
-CSRF_TRUSTED_ORIGINS = ['https://proto2.fly.dev','https://marketgpt.vercel.app']
+ALLOWED_HOSTS = ['localhost:3000', 'localhost', '127.0.0.1',
+                 '[::1]', 'proto2.fly.dev', 'marketgpt.vercel.app']
+CSRF_TRUSTED_ORIGINS = ['https://proto2.fly.dev',
+                        'https://marketgpt.vercel.app']
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -40,14 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic',    #whitenoise enabled in dev
+    'whitenoise.runserver_nostatic',  # whitenoise enabled in dev
     'django.contrib.staticfiles',
     'rest_framework',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',   #whitenoise
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # whitenoise
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,22 +83,19 @@ WSGI_APPLICATION = 'Proto2.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-#         "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
-#         "USER": os.environ.get("SQL_USER", "user"),
-#         "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
-#         "HOST": os.environ.get("SQL_HOST", "localhost"),
-#         "PORT": os.environ.get("SQL_PORT", "5432"),
-#     }
-# }
-
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://postgres:postgres@localhost:5432/postgres'
-    )
+    'default': {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME":  BASE_DIR / "pos_database.db",
+        "PORT": "5432"
+    }
 }
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='postgres://postgres:postgres@localhost:5432/postgres'
+#     )
+# }
 
 
 # Password validation
@@ -149,9 +148,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 
 REST_FRAMEWORK = {
-  'DEFAULT_AUTHENTICATION_CLASSES': (
-    'rest_framework.authentication.SessionAuthentication',
-    'rest_framework.authentication.BasicAuthentication',
-    'rest_framework_simplejwt.authentication.JWTAuthentication', 
-),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 }
