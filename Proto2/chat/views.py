@@ -5,6 +5,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.output_parsers import ResponseSchema
 from langchain.output_parsers import StructuredOutputParser
 from django.db import connection
+from .models import Logs
 
 class IndexView(APIView):
     def post(self, request, *args, **kwargs):
@@ -27,12 +28,16 @@ class IndexView(APIView):
                 prompt_template = ChatPromptTemplate.from_template(template)
                 print("Stage 1 : Prompt Template\n\n")
                 print(prompt_template)
+                stage1 = prompt_template
                 
                 messages = prompt_template.format_messages(prompt=prompt)
                 chat = ChatOpenAI(temperature=0.0, openai_api_key="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")
                 response = chat(messages)
                 print("\n\nStage 2: Initial Response\n\n")
                 print(response.content)
+
+                stage2 = response.content
+
                 
                 querySchema = ResponseSchema(name="query", description="A SQL query that should be executed. All identifiers in the query should be in quotes.")
                 responseSchemas = [querySchema]
@@ -40,6 +45,8 @@ class IndexView(APIView):
                 format_instructions = output_parser.get_format_instructions()
                 print("\n\nStage 3: Format Instructions\n\n")
                 print(format_instructions)
+
+                stage3 = format_instructions
                 
                 template2 = """There is a SQL Table by the name "Sales" which contains information in the following format:
                     MONTH	STORECODE	DAY	BILL_ID	BILL_AMT	QTY	VALUE	PRICE	GRP	SGRP	SSGRP	CMP	MBRD	BRD
@@ -58,10 +65,14 @@ class IndexView(APIView):
                                     format_instructions=format_instructions)
                 print("\n\nStage 4: Better Prompt Template\n\n")
                 print(messages[0].content)
+
+                stage4 = messages[0].content
                 
                 response = chat(messages)
                 print("\n\nStage 5: Better Response\n\n")
                 print(response.content)
+
+                stage5 = response.content
                 
                 output_dict = output_parser.parse(response.content)
                 query = output_dict.get('query')
@@ -92,6 +103,19 @@ class IndexView(APIView):
                 
                 print("\n\nStage 6: HTML Response\n\n")
                 print(html_response.content)
+
+                stage6 = html_response.content
+                logs_instance = Logs(
+                    prompt_template=stage1,
+                    initial_response=stage2,
+                    format_instructions=stage3,
+                    better_prompt_template=stage4,
+                    better_response=stage5,
+                    html_response = stage6
+                )
+
+
+                logs_instance.save()
                 
                 return Response(html_response.content)
             except Exception as e:
