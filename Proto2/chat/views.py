@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from Proto2.chat.pipelines.AmazonSalesBasic.amazon_sales_basic_p0 import amazon_sales_basic_p0
-from .pipelines.POS.pos_p0_initial import pos_p0_initial
+from chat.pipelines.AmazonSalesBasic.amazon_sales_basic_p0 import amazon_sales_basic_p0
+from chat.pipelines.POS.pos_p0_initial import pos_p0_initial
 
 
 class POSChatView(APIView):

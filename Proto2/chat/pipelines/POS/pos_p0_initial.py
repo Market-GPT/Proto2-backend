@@ -1,8 +1,11 @@
+import os
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.output_parsers import ResponseSchema
 from langchain.output_parsers import StructuredOutputParser
 from django.db import connection
+from dotenv import load_dotenv
+_ = load_dotenv('.env.dev')
 
 def pos_p0_initial(prompt) :
     template = """There is a SQL Table by the name "Sales" which contains information in the following format:
@@ -22,7 +25,7 @@ def pos_p0_initial(prompt) :
     print(prompt_template)
     
     messages = prompt_template.format_messages(prompt=prompt)
-    chat = ChatOpenAI(temperature=0.0, openai_api_key="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")
+    chat = ChatOpenAI(temperature=0.0, openai_api_key=os.environ['OPENAI_API_KEY'])
     response = chat(messages)
     print("\n\nStage 2: Initial Response\n\n")
     print(response.content)
