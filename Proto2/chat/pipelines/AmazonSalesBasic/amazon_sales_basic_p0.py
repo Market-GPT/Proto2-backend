@@ -283,7 +283,7 @@ You'll be a given a user text delimited by {delimiter}.
 Your role is to format the text appropriately as html suitable to be displayed on
 a webpage. If the response doesn't contain You have to follow the following steps:
 Step - 1 : Format the text as pure html.
-Step - 2 : If the text contains table and images, then make the table and images responsive.
+Step - 2 : If the text contains table and images, then make the table and images responsive such that it fits in a block of 1000px.
 """
 '''Returns an HTML string'''
 def get_completion_formatted(response):
@@ -333,7 +333,7 @@ def sql_process(prompt,conversation,assumptions,sql_query,trace='',recheck=False
                     Assumptions : {assumptions}\n\
                     Error while executing: {stacktrace}"
             else:
-                sql_process(prompt,assumptions,sql,stacktrace,recheck=True)
+                sql_process(prompt,conversation,assumptions,sql,stacktrace,recheck=True)
         else:
             conversation.execution_result=True
             return f"SQL Query : {sql}\n\
