@@ -296,14 +296,24 @@ def get_completion_formatted(response):
 
         
 ############################### SQL Processing Pipeline ##########################
-def sql_process(prompt,assumptions,sql_query,trace,recheck=False):
-    enhancement_response=(not recheck) if get_completion_enhanced(prompt,assumptions,sql_query) else get_completion_enhanced_error()
+def sql_process(prompt,conversation,assumptions,sql_query,trace,recheck=False):
+    enhancement_response=""
+    if(recheck):
+        conversation.recheck=True
+        enhancement_response = get_completion_enhanced_error(prompt,assumptions,sql_query,trace)
+        conversation.regeneration=enhancement_response
+    else:
+        enhancement_response = get_completion_enhanced(prompt,assumptions,sql_query)
+        conversation.enhancement=enhancement_response
+        
     print(f"recheck:\n {recheck}",enhancement_response)
     filtered_response=get_completion_filter(enhancement_response)
+    conversation.filtering=filtered_response
     json2 = json.loads(filtered_response)
     print(json2)
     sql = json2["sql"]
     modifies = json2["modifies"]
+    conversation.modifies=modifies
     if modifies=='yes':
         return f"SQL Query : {sql}\n\
             Assumptions : {assumptions}\n\
@@ -311,6 +321,7 @@ def sql_process(prompt,assumptions,sql_query,trace,recheck=False):
     else:
         execution_response = execute_query(sql)
         json3 = json.loads(execution_response)
+        conversation.execution=execution_response
         print(json3)
         result = json3["result"]
         stacktrace = json3["stacktrace"]
@@ -322,23 +333,32 @@ def sql_process(prompt,assumptions,sql_query,trace,recheck=False):
             else:
                 sql_process(prompt,assumptions,sql,stacktrace,recheck=True)
         else:
+            conversation.execution_result=True
             return f"SQL Query : {sql}\n\
                 Assumptions : {assumptions}\n\
                 Output : {stacktrace}"  # Stacktrace would be rows if result is "success"
     
-def amazon_sales_basic_p0(prompt) :
+def amazon_sales_basic_p0(prompt, conversation) :
     output = ''
     json_response=json.loads(get_completion_classify(prompt))
+    conversation.classification = json_response
+    conversation.related=json_response["related"]
+    conversation.meta=json_response["meta"]
+    conversation.sql=json_response["sql"]
     print(json_response)
     if(json_response["related"]=='yes' and json_response["sql"]=='yes' and json_response["meta"]=='no'):
         #Further processing
         generation_response=get_completion_generate_sql(prompt)
         json_res = json.loads(generation_response)
+        conversation.generation=json_res
         print(json_res)
         assumptions = json_res["assumptions"]
+        conversation.assumptions = assumptions
         sql_query = json_res["sql"]
-        output = sql_process(prompt, assumptions, sql_query)
+        output = sql_process(prompt, conversation, assumptions, sql_query)
     else:
         output = get_completion_generate_text(prompt)
-        
+        conversation.generation = output
+    
+    conversation.final_response = output
     return get_completion_formatted(output)
