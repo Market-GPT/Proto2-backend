@@ -320,11 +320,11 @@ def sql_process(prompt,conversation,assumptions,sql_query,trace='',recheck=False
             The query cannot be executed as it tries to modify the database."
     else:
         execution_response = execute_query(sql)
-        json3 = json.loads(execution_response)
-        conversation.execution=execution_response
-        print(json3)
-        result = json3["result"]
-        stacktrace = json3["stacktrace"]
+        print(execution_response)
+        conversation.execution=str(execution_response)
+        print(execution_response)
+        result = execution_response["result"]
+        stacktrace = execution_response["stacktrace"]
         if result=="error":
             if recheck==True:
                 return f"SQL Query : {sql}\n\
