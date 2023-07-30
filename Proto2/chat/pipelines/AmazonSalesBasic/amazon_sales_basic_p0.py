@@ -342,9 +342,9 @@ def amazon_sales_basic_p0(prompt, conversation) :
     output = ''
     json_response=json.loads(get_completion_classify(prompt))
     conversation.classification = json_response
-    conversation.related=json_response["related"]
-    conversation.meta=json_response["meta"]
-    conversation.sql=json_response["sql"]
+    conversation.related=(json_response["related"] == 'yes') if True else False
+    conversation.meta=(json_response["meta"] == 'yes') if True else False
+    conversation.sql=(json_response["sql"] == 'yes') if True else False
     print(json_response)
     if(json_response["related"]=='yes' and json_response["sql"]=='yes' and json_response["meta"]=='no'):
         #Further processing
