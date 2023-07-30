@@ -278,12 +278,35 @@ def get_completion_enhanced_error(user_prompt,assumptions,sql_query,error):
 
 
 ################################# Formatting #################################
+system_message_formatted_sql="""
+You'll be a given a user text delimited by {delimiter}. 
+Your role is to format the text appropriately as html suitable to be displayed on
+a webpage. You have to follow the following steps:
+Step - 1 : Format the text as pure html. The html should contain three seperate sections for SQL Query, Assumptions and Output.
+Step - 2 : The Output should be displayed as a table that fits in a window width of 400px. 
+Step - 3 : If any column has a large body of text wrap or truncate the text if needed.
+Step - 4 : Check that the html is valid for rendering.
+Step - 5 : Provide your output as an html string.
+"""
+'''Returns an HTML string'''
+def get_completion_formatted_sql(response):
+    messages =  [
+      {'role':'system',
+      'content': system_message_formatted_sql.format(delimiter=delimiter)},
+      {'role':'user',
+      'content': f"{delimiter}{response}{delimiter}"},
+    ]
+
+    return get_completion_from_messages(messages=messages)
+
 system_message_formatted="""
 You'll be a given a user text delimited by {delimiter}. 
 Your role is to format the text appropriately as html suitable to be displayed on
-a webpage. If the response doesn't contain You have to follow the following steps:
+a webpage. You have to follow the following steps:
 Step - 1 : Format the text as pure html.
-Step - 2 : If the text contains table and images, then make the table and images responsive such that it fits in a block of 1000px.
+Step - 2 : The html content should be responsive.
+Step - 3 : Check that the html is valid for rendering.
+Step - 4 : Provide your output as an html string.
 """
 '''Returns an HTML string'''
 def get_completion_formatted(response):
@@ -358,9 +381,12 @@ def amazon_sales_basic_p0(prompt, conversation) :
         conversation.assumptions = assumptions
         sql_query = json_res["sql"]
         output = sql_process(prompt, conversation, assumptions, sql_query)
+        conversation.final_response = output
+        return get_completion_formatted_sql(output)
     else:
         output = get_completion_generate_text(prompt)
         conversation.generation = output
+        conversation.final_response = output
+        return get_completion_formatted(output)
     
-    conversation.final_response = output
-    return get_completion_formatted(output)
+    
