@@ -296,7 +296,7 @@ def get_completion_formatted(response):
 
         
 ############################### SQL Processing Pipeline ##########################
-def sql_process(prompt,conversation,assumptions,sql_query,trace,recheck=False):
+def sql_process(prompt,conversation,assumptions,sql_query,trace='',recheck=False):
     enhancement_response=""
     if(recheck):
         conversation.recheck=True
