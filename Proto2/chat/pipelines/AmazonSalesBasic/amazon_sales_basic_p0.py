@@ -313,7 +313,7 @@ def sql_process(prompt,conversation,assumptions,sql_query,trace='',recheck=False
     print(json2)
     sql = json2["sql"]
     modifies = json2["modifies"]
-    conversation.modifies=modifies
+    conversation.modifies=(modifies == 'yes') if True else False
     if modifies=='yes':
         return f"SQL Query : {sql}\n\
             Assumptions : {assumptions}\n\
