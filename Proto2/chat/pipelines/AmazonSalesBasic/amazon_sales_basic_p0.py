@@ -298,8 +298,10 @@ def get_completion_formatted(response):
 ############################### SQL Processing Pipeline ##########################
 def sql_process(prompt,assumptions,sql_query,trace,recheck=False):
     enhancement_response=(not recheck) if get_completion_enhanced(prompt,assumptions,sql_query) else get_completion_enhanced_error()
+    print(f"recheck:\n {recheck}",enhancement_response)
     filtered_response=get_completion_filter(enhancement_response)
     json2 = json.loads(filtered_response)
+    print(json2)
     sql = json2["sql"]
     modifies = json2["modifies"]
     if modifies=='yes':
@@ -309,6 +311,7 @@ def sql_process(prompt,assumptions,sql_query,trace,recheck=False):
     else:
         execution_response = execute_query(sql)
         json3 = json.loads(execution_response)
+        print(json3)
         result = json3["result"]
         stacktrace = json3["stacktrace"]
         if result=="error":
@@ -325,13 +328,15 @@ def sql_process(prompt,assumptions,sql_query,trace,recheck=False):
     
 def amazon_sales_basic_p0(prompt) :
     output = ''
-    json_response=get_completion_classify(prompt)
+    json_response=json.loads(get_completion_classify(prompt))
+    print(json_response)
     if(json_response["related"]=='yes' and json_response["sql"]=='yes' and json_response["meta"]=='no'):
         #Further processing
         generation_response=get_completion_generate_sql(prompt)
-        json = json.loads(generation_response)
-        assumptions = json["assumptions"]
-        sql_query = json["sql"]
+        json_res = json.loads(generation_response)
+        print(json_res)
+        assumptions = json_res["assumptions"]
+        sql_query = json_res["sql"]
         output = sql_process(prompt, assumptions, sql_query)
     else:
         output = get_completion_generate_text(prompt)
