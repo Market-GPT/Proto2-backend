@@ -281,7 +281,9 @@ def get_completion_enhanced_error(user_prompt,assumptions,sql_query,error):
 system_message_formatted="""
 You'll be a given a user text delimited by {delimiter}. 
 Your role is to format the text appropriately as html suitable to be displayed on
-a webpage.
+a webpage. If the response doesn't contain You have to follow the following steps:
+Step - 1 : Format the text as pure html.
+Step - 2 : If the text contains table and images, then make the table and images responsive.
 """
 '''Returns an HTML string'''
 def get_completion_formatted(response):
