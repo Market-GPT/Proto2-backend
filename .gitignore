@@ -19,3 +19,4 @@ venv/
 .vscode/
 .tmp
 Proto2/wg0
+Proto2/staticfiles/

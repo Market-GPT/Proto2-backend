@@ -1,7 +1,7 @@
 import os
 import openai
-# from dotenv import load_dotenv
-# _ = load_dotenv('.env.dev')   # Not required in production
+from dotenv import load_dotenv
+_ = load_dotenv('.env.dev')   # Not required in production
 
 openai.api_key  = os.environ['OPENAI_API_KEY']
 
