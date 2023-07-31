@@ -283,8 +283,8 @@ You'll be a given a user text delimited by {delimiter}.
 Your role is to format the text appropriately as html suitable to be displayed on
 a webpage. You have to follow the following steps:
 Step - 1 : Format the text as pure html. The html should contain three seperate sections for SQL Query, Assumptions and Output.
-Step - 2 : The Output should be displayed as a table that fits in a window width of 400px. 
-Step - 3 : If any column has a large body of text wrap or truncate the text if needed.
+Step - 2 : The Output is a python double array. Convert it to html table.
+Step - 3 : The Output should be displayed as a table that fits in a window width of 400px. If any column has a large body of text wrap or truncate the text if needed.
 Step - 4 : Check that the html is valid for rendering.
 Step - 5 : Provide your output as an html string.
 """
