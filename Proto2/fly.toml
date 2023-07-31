@@ -15,7 +15,7 @@ console_command = "/code/manage.py shell"
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 0
-  processes = ["app", "celery"]
+  processes = ["app", "celery", "flower"]
 
 [[services]]
   protocol = "tcp"
@@ -26,6 +26,13 @@ console_command = "/code/manage.py shell"
     port = 5432
     handlers = ["pg_tls"]
 
+[[services]]
+  protocol = "tcp"
+  internal_port = 5555
+  processes = ["flower"]
+
+  [[services.ports]]
+    port = 5555
 
 [[statics]]
   guest_path = "/code/static"
@@ -38,3 +45,7 @@ console_command = "/code/manage.py shell"
 [[processes]]
   name = "celery"
   command = "celery -A Proto2 worker --loglevel=info"
+
+[[processes]]
+  name = "flower"
+  command = "bash scripts/flower.sh"

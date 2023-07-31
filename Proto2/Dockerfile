@@ -16,6 +16,7 @@ RUN set -ex && \
     rm -rf /root/.cache/
 COPY . /code
 
+RUN chmod +x scripts/flower.sh
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
