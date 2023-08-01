@@ -47,7 +47,7 @@ console_command = "/code/manage.py shell"
 
 [[processes]]
   name = "app"
-  command = "gunicorn Proto2.wsgi:application --bind 0.0.0.0:8000 --workers=2"
+  command = "gunicorn Proto2.wsgi:application --bind 0.0.0.0:8000"
 
 [[processes]]
   name = "celery"
