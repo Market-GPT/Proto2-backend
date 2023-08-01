@@ -221,6 +221,8 @@ Step 2:
 Given the schema of the table, check if the query is syntactically correct? If no, correct the query. If yes, go to the next step.
 Step 3:
 Enhance the information shown by the query with some additional information which may be relevant to the problem.
+Step 4:
+LIMIT the query output to 6 rows only if it is more than that.
 
 Finally, Output the modified query.
 """
@@ -297,7 +299,7 @@ def get_completion_formatted_sql(response):
       'content': f"{delimiter}{response}{delimiter}"},
     ]
 
-    return get_completion_from_messages(messages=messages)
+    return get_completion_from_messages(messages=messages, model="gpt-3.5-turbo-16k")
 
 system_message_formatted="""
 You'll be a given a user text delimited by {delimiter}. 
