@@ -1,4 +1,5 @@
 import json
+from Proto2.chat.pipelines.utils.openai import curtail_output
 from chat.pipelines.utils.openai import get_completion_from_messages
 from chat.pipelines.utils.query import execute_query
 
@@ -384,7 +385,7 @@ def amazon_sales_basic_p0(prompt, conversation) :
         sql_query = json_res["sql"]
         output = sql_process(prompt, conversation, assumptions, sql_query)
         conversation.final_response = output
-        return get_completion_formatted_sql(output)
+        return get_completion_formatted_sql(curtail_output(output))
     else:
         output = get_completion_generate_text(prompt)
         conversation.generation = output
