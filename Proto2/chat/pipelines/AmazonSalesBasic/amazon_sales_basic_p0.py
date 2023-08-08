@@ -1,5 +1,5 @@
 import json
-from Proto2.chat.pipelines.utils.openai import curtail_output
+from chat.pipelines.utils.openai import curtail_output
 from chat.pipelines.utils.openai import get_completion_from_messages
 from chat.pipelines.utils.query import execute_query
 
